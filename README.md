@@ -44,7 +44,7 @@ snforge --version
 
 ### 1. Clone the repository
   ```sh
-  git clone https://github.com/<nombre-de-tu-organizacion>/Starklotto.git
+  git clone https://github.com/Starklotto/Starklotto.git
   cd Starklotto
   ```
 ### 2. Install dependencies
