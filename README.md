@@ -71,3 +71,39 @@ In a third terminal, start the frontend application:
 yarn start
  ```
 Open your browser and visit: http://localhost:3000
+
+### Contribute
+Contributions are welcome. If you wish to contribute, please follow these instructions:
+1. Fork this repository.
+2. Create a new branch:
+  ```sh
+ git checkout -b feature/new-functionality
+```
+3. Make your changes and create a commit:
+  ```sh
+ git commit -m “Description of change”.
+  ```
+4. Upload your changes:
+   ```sh
+   git push origin origin feature/new-functionality
+   ```
+5. Open a Pull Request.
+
+## Tests
+Write tests for smart contracts and frontend:
+### Smart contracts:
+
+1. Add tests in packages/snfoundry/contracts/src/test.
+2. Execute the tests:
+  ```sh
+  yarn test
+  ```
+### Frontend:
+Run tests for Next.js:
+```sh
+yarn test:nextjs
+ ```
+## Customization
+- Modify contracts in packages/snfoundry/contracts/src/YourContract.cairo.
+- Adjust interface in packages/nextjs/app/page.tsx.
+- Update deployment scripts in packages/snfoundry/scripts-ts/deploy.ts.
