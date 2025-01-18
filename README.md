@@ -84,9 +84,9 @@ Contributions are welcome. If you wish to contribute, please follow these instru
  git commit -m “Description of change”.
   ```
 4. Upload your changes:
-   ```sh
-   git push origin origin feature/new-functionality
-   ```
+  ```sh
+  git push origin origin feature/new-functionality
+  ```
 5. Open a Pull Request.
 
 ## Tests
@@ -95,9 +95,9 @@ Write tests for smart contracts and frontend:
 
 1. Add tests in packages/snfoundry/contracts/src/test.
 2. Execute the tests:
-  ```sh
-  yarn test
-  ```
+```sh
+yarn test
+```
 ### Frontend:
 Run tests for Next.js:
 ```sh
