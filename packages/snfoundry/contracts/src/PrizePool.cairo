@@ -70,6 +70,55 @@ mod PrizePool {
         self.platform_fee_percentage.write(10_u256);
     }
 
+    #[abi(embed_v0)]
+    impl IPrizePoolImpl of IPrizePool<ContractState> {
+        fn set_platform_fee(ref self: ContractState, percentage: u256) {
+            self.accesscontrol.assert_only_role(PLATFORM_FEE_SETTER_ROLE);
+            
+            assert(!percentage.is_zero(), "Fee cannot be zero");
+            assert(percentage <= 100_u256, "Fee cannot exceed 100%");
+            
+            let old_fee = self.platform_fee_percentage.read();
+            self.platform_fee_percentage.write(percentage);
+            
+            self.emit(FeeUpdated { old_fee, new_fee: percentage });
+        }
+
+        fn split_prize(ref self: ContractState, total_amount: u256) -> (u256, u256) {
+            let fee_percent = self.platform_fee_percentage.read();
+            
+            let (platform_share, remainder) = u256_wide_mul_div(total_amount, fee_percent, 100_u256);
+            
+            self.platform_reserves.write(self.platform_reserves.read() + platform_share);
+            
+            // Winner gets remainder
+            let winner_share = total_amount - platform_share;
+            
+            (winner_share, platform_share)
+        }
+
+        fn withdraw_reserves(ref self: ContractState, amount: u256, recipient: ContractAddress) {
+            self.accesscontrol.assert_only_role(DEFAULT_ADMIN_ROLE);
+            
+            let current_reserves = self.platform_reserves.read();
+            assert(current_reserves >= amount, "Insufficient reserves");
+            
+            self.platform_reserves.write(current_reserves - amount);
+            
+            self.erc20.transfer(recipient, amount);
+            
+            self.emit(ReservesWithdrawn { amount, recipient });
+        }
+
+        fn get_platform_fee(ref self: ContractState) -> u256 {
+            self.platform_fee_percentage.read()
+        }
+
+        fn get_platform_reserves(ref self: ContractState) -> u256 {
+            self.platform_reserves.read()
+        }
+    }
+
 
     fn u256_wide_mul_div(value: u256, numerator: u256, denominator: u256) -> (u256, u256) {
         let (high, low) = value.widening_mul(numerator);
